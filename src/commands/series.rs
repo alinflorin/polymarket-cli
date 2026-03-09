@@ -6,7 +6,7 @@ use polymarket_client_sdk::gamma::{
 };
 
 use crate::output::OutputFormat;
-use crate::output::series::{print_series_detail, print_series_table};
+use crate::output::series::{print_series_item, print_series};
 
 #[derive(Args)]
 pub struct SeriesArgs {
@@ -64,14 +64,14 @@ pub async fn execute(client: &gamma::Client, args: SeriesArgs, output: OutputFor
                 .build();
 
             let series = client.series(&request).await?;
-            print_series_table(&series, &output)?;
+            print_series(&series, &output)?;
         }
 
         SeriesCommand::Get { id } => {
             let req = SeriesByIdRequest::builder().id(id).build();
             let series = client.series_by_id(&req).await?;
 
-            print_series_detail(&series, &output)?;
+            print_series_item(&series, &output)?;
         }
     }
 

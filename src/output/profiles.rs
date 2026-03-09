@@ -2,7 +2,7 @@ use polymarket_client_sdk::gamma::types::response::PublicProfile;
 
 use super::{OutputFormat, detail_field, print_detail_table, print_json};
 
-pub fn print_profile_detail(p: &PublicProfile, output: &OutputFormat) -> anyhow::Result<()> {
+pub fn print_profile(p: &PublicProfile, output: &OutputFormat) -> anyhow::Result<()> {
     if matches!(output, OutputFormat::Json) {
         return print_json(p);
     }

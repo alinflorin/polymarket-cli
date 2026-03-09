@@ -27,7 +27,7 @@ fn sport_to_row(s: &SportsMetadata) -> SportRow {
     }
 }
 
-pub fn print_sports_table(sports: &[SportsMetadata], output: &OutputFormat) -> anyhow::Result<()> {
+pub fn print_sports(sports: &[SportsMetadata], output: &OutputFormat) -> anyhow::Result<()> {
     match output {
         OutputFormat::Table => {
             if sports.is_empty() {
@@ -83,7 +83,7 @@ fn team_to_row(t: &Team) -> TeamRow {
     }
 }
 
-pub fn print_teams_table(teams: &[Team], output: &OutputFormat) -> anyhow::Result<()> {
+pub fn print_teams(teams: &[Team], output: &OutputFormat) -> anyhow::Result<()> {
     match output {
         OutputFormat::Table => {
             if teams.is_empty() {

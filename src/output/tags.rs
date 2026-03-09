@@ -25,7 +25,7 @@ fn tag_to_row(t: &Tag) -> TagRow {
     }
 }
 
-pub fn print_tags_table(tags: &[Tag], output: &OutputFormat) -> anyhow::Result<()> {
+pub fn print_tags(tags: &[Tag], output: &OutputFormat) -> anyhow::Result<()> {
     match output {
         OutputFormat::Table => {
             if tags.is_empty() {
@@ -62,7 +62,7 @@ fn related_tag_to_row(r: &RelatedTag) -> RelatedTagRow {
     }
 }
 
-pub fn print_related_tags_table(tags: &[RelatedTag], output: &OutputFormat) -> anyhow::Result<()> {
+pub fn print_related_tags(tags: &[RelatedTag], output: &OutputFormat) -> anyhow::Result<()> {
     match output {
         OutputFormat::Table => {
             if tags.is_empty() {
@@ -79,7 +79,7 @@ pub fn print_related_tags_table(tags: &[RelatedTag], output: &OutputFormat) -> a
 }
 
 #[allow(clippy::vec_init_then_push)]
-pub fn print_tag_detail(t: &Tag, output: &OutputFormat) -> anyhow::Result<()> {
+pub fn print_tag(t: &Tag, output: &OutputFormat) -> anyhow::Result<()> {
     if matches!(output, OutputFormat::Json) {
         return print_json(t);
     }

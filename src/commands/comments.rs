@@ -1,5 +1,3 @@
-use crate::output::OutputFormat;
-use crate::output::comments::{print_comment_detail, print_comments_table};
 use anyhow::Result;
 use clap::{Args, Subcommand};
 use polymarket_client_sdk::gamma::{
@@ -9,6 +7,9 @@ use polymarket_client_sdk::gamma::{
         request::{CommentsByIdRequest, CommentsByUserAddressRequest, CommentsRequest},
     },
 };
+
+use crate::output::OutputFormat;
+use crate::output::comments::{print_comment, print_comments};
 
 #[derive(Args)]
 pub struct CommentsArgs {
@@ -115,7 +116,7 @@ pub async fn execute(
                 .build();
 
             let comments = client.comments(&request).await?;
-            print_comments_table(&comments, &output)?;
+            print_comments(&comments, &output)?;
         }
 
         CommentsCommand::Get { id } => {
@@ -126,7 +127,7 @@ pub async fn execute(
                 anyhow::bail!("Comment not found");
             };
 
-            print_comment_detail(comment, &output)?;
+            print_comment(comment, &output)?;
         }
 
         CommentsCommand::ByUser {
@@ -145,7 +146,7 @@ pub async fn execute(
                 .build();
 
             let comments = client.comments_by_user_address(&request).await?;
-            print_comments_table(&comments, &output)?;
+            print_comments(&comments, &output)?;
         }
     }
 

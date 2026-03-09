@@ -1,11 +1,12 @@
-use crate::output::OutputFormat;
-use crate::output::bridge::{print_deposit, print_status, print_supported_assets};
 use anyhow::Result;
 use clap::{Args, Subcommand};
 use polymarket_client_sdk::bridge::{
     self,
     types::{DepositRequest, StatusRequest},
 };
+
+use crate::output::OutputFormat;
+use crate::output::bridge::{print_deposit, print_status, print_supported_assets};
 
 #[derive(Args)]
 pub struct BridgeArgs {

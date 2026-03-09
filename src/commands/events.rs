@@ -7,8 +7,8 @@ use polymarket_client_sdk::gamma::{
 
 use super::is_numeric_id;
 use crate::output::OutputFormat;
-use crate::output::events::{print_event_detail, print_events_table};
-use crate::output::tags::print_tags_table;
+use crate::output::events::{print_event, print_events};
+use crate::output::tags::print_tags;
 
 #[derive(Args)]
 pub struct EventsArgs {
@@ -86,7 +86,7 @@ pub async fn execute(client: &gamma::Client, args: EventsArgs, output: OutputFor
                 .build();
 
             let events = client.events(&request).await?;
-            print_events_table(&events, &output)?;
+            print_events(&events, &output)?;
         }
 
         EventsCommand::Get { id } => {
@@ -99,14 +99,14 @@ pub async fn execute(client: &gamma::Client, args: EventsArgs, output: OutputFor
                 client.event_by_slug(&req).await?
             };
 
-            print_event_detail(&event, &output)?;
+            print_event(&event, &output)?;
         }
 
         EventsCommand::Tags { id } => {
             let req = EventTagsRequest::builder().id(id).build();
             let tags = client.event_tags(&req).await?;
 
-            print_tags_table(&tags, &output)?;
+            print_tags(&tags, &output)?;
         }
     }
 

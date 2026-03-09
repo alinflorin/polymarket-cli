@@ -42,7 +42,7 @@ fn comment_to_row(c: &Comment) -> CommentRow {
     }
 }
 
-pub fn print_comments_table(comments: &[Comment], output: &OutputFormat) -> anyhow::Result<()> {
+pub fn print_comments(comments: &[Comment], output: &OutputFormat) -> anyhow::Result<()> {
     match output {
         OutputFormat::Table => {
             if comments.is_empty() {
@@ -58,7 +58,7 @@ pub fn print_comments_table(comments: &[Comment], output: &OutputFormat) -> anyh
     Ok(())
 }
 
-pub fn print_comment_detail(c: &Comment, output: &OutputFormat) -> anyhow::Result<()> {
+pub fn print_comment(c: &Comment, output: &OutputFormat) -> anyhow::Result<()> {
     if matches!(output, OutputFormat::Json) {
         return print_json(c);
     }

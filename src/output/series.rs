@@ -31,7 +31,7 @@ fn series_to_row(s: &Series) -> SeriesRow {
     }
 }
 
-pub fn print_series_table(series: &[Series], output: &OutputFormat) -> anyhow::Result<()> {
+pub fn print_series(series: &[Series], output: &OutputFormat) -> anyhow::Result<()> {
     match output {
         OutputFormat::Table => {
             if series.is_empty() {
@@ -47,7 +47,7 @@ pub fn print_series_table(series: &[Series], output: &OutputFormat) -> anyhow::R
     Ok(())
 }
 
-pub fn print_series_detail(s: &Series, output: &OutputFormat) -> anyhow::Result<()> {
+pub fn print_series_item(s: &Series, output: &OutputFormat) -> anyhow::Result<()> {
     if matches!(output, OutputFormat::Json) {
         return print_json(s);
     }

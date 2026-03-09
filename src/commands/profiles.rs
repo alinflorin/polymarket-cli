@@ -1,9 +1,10 @@
-use crate::output::OutputFormat;
-use crate::output::profiles::print_profile_detail;
 use anyhow::Result;
 use clap::{Args, Subcommand};
 use polymarket_client_sdk::gamma::{self, types::request::PublicProfileRequest};
 use polymarket_client_sdk::types::Address;
+
+use crate::output::OutputFormat;
+use crate::output::profiles::print_profile;
 
 #[derive(Args)]
 pub struct ProfilesArgs {
@@ -30,7 +31,7 @@ pub async fn execute(
             let req = PublicProfileRequest::builder().address(address).build();
             let profile = client.public_profile(&req).await?;
 
-            print_profile_detail(&profile, &output)?;
+            print_profile(&profile, &output)?;
         }
     }
 

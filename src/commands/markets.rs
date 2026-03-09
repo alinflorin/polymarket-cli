@@ -13,8 +13,8 @@ use polymarket_client_sdk::gamma::{
 
 use super::is_numeric_id;
 use crate::output::OutputFormat;
-use crate::output::markets::{print_market_detail, print_markets_table};
-use crate::output::tags::print_tags_table;
+use crate::output::markets::{print_market, print_markets};
+use crate::output::tags::print_tags;
 
 #[derive(Args)]
 pub struct MarketsArgs {
@@ -99,7 +99,7 @@ pub async fn execute(
                 .build();
 
             let markets = client.markets(&request).await?;
-            print_markets_table(&markets, &output)?;
+            print_markets(&markets, &output)?;
         }
 
         MarketsCommand::Get { id } => {
@@ -112,7 +112,7 @@ pub async fn execute(
                 client.market_by_slug(&req).await?
             };
 
-            print_market_detail(&market, &output)?;
+            print_market(&market, &output)?;
         }
 
         MarketsCommand::Search { query, limit } => {
@@ -130,14 +130,14 @@ pub async fn execute(
                 .flat_map(|e| e.markets.unwrap_or_default())
                 .collect();
 
-            print_markets_table(&markets, &output)?;
+            print_markets(&markets, &output)?;
         }
 
         MarketsCommand::Tags { id } => {
             let req = MarketTagsRequest::builder().id(id).build();
             let tags = client.market_tags(&req).await?;
 
-            print_tags_table(&tags, &output)?;
+            print_tags(&tags, &output)?;
         }
     }
 

@@ -37,7 +37,7 @@ fn event_to_row(e: &Event) -> EventRow {
     }
 }
 
-pub fn print_events_table(events: &[Event], output: &OutputFormat) -> anyhow::Result<()> {
+pub fn print_events(events: &[Event], output: &OutputFormat) -> anyhow::Result<()> {
     match output {
         OutputFormat::Table => {
             if events.is_empty() {
@@ -54,7 +54,7 @@ pub fn print_events_table(events: &[Event], output: &OutputFormat) -> anyhow::Re
 }
 
 #[allow(clippy::too_many_lines)]
-pub fn print_event_detail(e: &Event, output: &OutputFormat) -> anyhow::Result<()> {
+pub fn print_event(e: &Event, output: &OutputFormat) -> anyhow::Result<()> {
     if matches!(output, OutputFormat::Json) {
         return print_json(e);
     }
