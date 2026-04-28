@@ -16,7 +16,6 @@ use crate::output::clob::{
 use anyhow::Result;
 use chrono::NaiveDate;
 use clap::{Args, Subcommand};
-use polymarket_client_sdk_v2::clob;
 use polymarket_client_sdk_v2::clob::types::{
     Amount, AssetType, Interval, OrderType, Side, TimeRange,
     request::{
@@ -493,7 +492,7 @@ pub async fn execute(
     signature_type: Option<&str>,
 ) -> Result<()> {
     // Unauthenticated client — cheap to construct, used by read commands and CreateApiKey.
-    let unauth = clob::Client::default();
+    let unauth = auth::unauthenticated_clob_client()?;
     let output = &output;
 
     match args.command {
@@ -686,8 +685,11 @@ pub async fn execute(
                 .post_only(post_only)
                 .build()
                 .await?;
-            let order = client.sign(&signer, order).await?;
-            let result = client.post_order(order).await?;
+            let signed_order = client.sign(&signer, order).await?;
+            let mut results = client.post_orders(vec![signed_order]).await?;
+            let result = results
+                .pop()
+                .ok_or_else(|| anyhow::anyhow!("Order submission returned no result"))?;
             print_post_order_result(&result, output)?;
         }
 
@@ -765,8 +767,11 @@ pub async fn execute(
                 .order_type(OrderType::from(order_type))
                 .build()
                 .await?;
-            let order = client.sign(&signer, order).await?;
-            let result = client.post_order(order).await?;
+            let signed_order = client.sign(&signer, order).await?;
+            let mut results = client.post_orders(vec![signed_order]).await?;
+            let result = results
+                .pop()
+                .ok_or_else(|| anyhow::anyhow!("Order submission returned no result"))?;
             print_post_order_result(&result, output)?;
         }
 

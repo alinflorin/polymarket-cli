@@ -9,7 +9,12 @@ use polymarket_client_sdk_v2::{POLYGON, clob};
 
 use crate::config;
 
+const DEFAULT_CLOB_HOST: &str = "https://clob.polymarket.com";
 const DEFAULT_RPC_URL: &str = "https://polygon.drpc.org";
+
+fn clob_host() -> String {
+    std::env::var("POLYMARKET_CLOB_HOST").unwrap_or_else(|_| DEFAULT_CLOB_HOST.to_string())
+}
 
 fn rpc_url() -> String {
     std::env::var("POLYMARKET_RPC_URL").unwrap_or_else(|_| DEFAULT_RPC_URL.to_string())
@@ -47,12 +52,17 @@ pub async fn authenticate_with_signer(
 ) -> Result<clob::Client<Authenticated<Normal>>> {
     let sig_type = parse_signature_type(&config::resolve_signature_type(signature_type_flag)?);
 
-    clob::Client::new("https://clob-v2.polymarket.com", clob::Config::default())?
+    unauthenticated_clob_client()?
         .authentication_builder(signer)
         .signature_type(sig_type)
         .authenticate()
         .await
         .context("Failed to authenticate with Polymarket CLOB")
+}
+
+pub fn unauthenticated_clob_client() -> Result<clob::Client> {
+    clob::Client::new(&clob_host(), clob::Config::default())
+        .context("Failed to create Polymarket CLOB client")
 }
 
 pub async fn create_readonly_provider() -> Result<impl alloy::providers::Provider + Clone> {
