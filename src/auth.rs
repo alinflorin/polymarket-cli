@@ -47,7 +47,7 @@ pub async fn authenticate_with_signer(
 ) -> Result<clob::Client<Authenticated<Normal>>> {
     let sig_type = parse_signature_type(&config::resolve_signature_type(signature_type_flag)?);
 
-    clob::Client::default()
+    clob::Client::new("https://clob-v2.polymarket.com", clob::Config::default())?
         .authentication_builder(signer)
         .signature_type(sig_type)
         .authenticate()
