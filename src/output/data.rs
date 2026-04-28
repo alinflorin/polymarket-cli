@@ -1,4 +1,4 @@
-use polymarket_client_sdk::data::types::response::{
+use polymarket_client_sdk_v2::data::types::response::{
     Activity, BuilderLeaderboardEntry, BuilderVolumeEntry, ClosedPosition, LiveVolume, Market,
     MetaHolder, OpenInterest, Position, Trade, Traded, TraderLeaderboardEntry, Value,
 };

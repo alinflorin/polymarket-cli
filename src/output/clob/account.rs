@@ -1,10 +1,10 @@
-use polymarket_client_sdk::auth::Credentials;
-use polymarket_client_sdk::clob::types::response::{
+use polymarket_client_sdk_v2::auth::Credentials;
+use polymarket_client_sdk_v2::clob::types::response::{
     ApiKeysResponse, BalanceAllowanceResponse, BanStatusResponse, CurrentRewardResponse,
     GeoblockResponse, MarketRewardResponse, NotificationResponse, Page, RewardsPercentagesResponse,
     TotalUserEarningResponse, UserEarningResponse, UserRewardsEarningResponse,
 };
-use polymarket_client_sdk::types::Decimal;
+use polymarket_client_sdk_v2::types::Decimal;
 use serde_json::json;
 use tabled::settings::Style;
 use tabled::{Table, Tabled};
