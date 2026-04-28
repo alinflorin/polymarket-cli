@@ -262,12 +262,13 @@ pub fn print_earnings(
 }
 
 pub fn print_user_earnings_markets(
-    result: &[UserRewardsEarningResponse],
+    result: &Page<UserRewardsEarningResponse>,
     output: &OutputFormat,
 ) -> anyhow::Result<()> {
+    let data = &result.data;
     match output {
         OutputFormat::Table => {
-            if result.is_empty() {
+            if data.is_empty() {
                 println!("No earnings data found.");
                 return Ok(());
             }
@@ -284,7 +285,7 @@ pub fn print_user_earnings_markets(
                 #[tabled(rename = "Min Size")]
                 min_size: String,
             }
-            let rows: Vec<Row> = result
+            let rows: Vec<Row> = data
                 .iter()
                 .map(|e| Row {
                     question: truncate(&e.question, 40),
@@ -296,9 +297,12 @@ pub fn print_user_earnings_markets(
                 .collect();
             let table = Table::new(rows).with(Style::rounded()).to_string();
             println!("{table}");
+            if result.next_cursor != END_CURSOR {
+                println!("Next cursor: {}", result.next_cursor);
+            }
         }
         OutputFormat::Json => {
-            let data: Vec<_> = result
+            let json_data: Vec<_> = data
                 .iter()
                 .map(|e| {
                     json!({
@@ -333,7 +337,8 @@ pub fn print_user_earnings_markets(
                     })
                 })
                 .collect();
-            crate::output::print_json(&data)?;
+            let wrapper = json!({"data": json_data, "next_cursor": result.next_cursor});
+            crate::output::print_json(&wrapper)?;
         }
     }
     Ok(())
